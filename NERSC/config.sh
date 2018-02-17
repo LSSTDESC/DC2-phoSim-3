@@ -1,31 +1,45 @@
 # config.sh - general set up for phoSim task
+#             updated for Run1.1
 
-## Prepare for phoSim
-
+## Prepare to run phoSim
+echo
+echo "Entering config.sh "
+echo "------------------"
+date
+echo
 ## Git repository containing visit lists and instanceCatalog generator
-##OBSOLETE##export DC2_ROOT='/global/projecta/projectdirs/lsst/production/DC2'
-export DC2_REPO=${DC2_PATH}'/DC2_Repo/scripts/protoDC2'
+export DC2_REPO='/global/common/software/lsst/cori-haswell-gcc/DC2_Repo/DC2_Repo'
 
 ## Select which to use for this task (u,g,r,i,z,y)
 export DC2_FILTER_LIST="u g r i z y"
+export DC2_FIELD_LIST="WFD uDDF"
 
 ## Visit lists
-export DC2_VISIT_DB=${DC2_REPO}/"protoDC2_visits_${DC2_FILTER}-band.txt"
+export DC2_VISIT_DB=${DC2_REPO}/data/Run1.1/"protoDC2_visits_${DC2_FIELD}_${DC2_FILTER}-band.txt"
 echo 'DC2_VISIT_DB = '$DC2_VISIT_DB
 
 ##
 ### Instance Catalog
 ##
+## Re-vamped 2/15/2018 to use 'prod' installations of IC-generation packages
 export PHOSIM_IC_GEN='DYNAMIC'
-export PHOSIM_IC_GENERATOR=${DC2_REPO}'/generateDc2InstCat.py'
-export PHOSIM_IC_GCR_CATALOGS=${DC2_PATH}'/gcr-catalogs'
+export PHOSIM_IC_SETUP='/global/common/software/lsst/cori-haswell-gcc/Run1.1p_setup.bash'
+export PHOSIM_IC_GENERATOR='generateInstCat.py'
 
 ## Dynamic Instance Catalogs...
-### OpSim DB for generating instanceCatalog
-export DC2_OPSSIM_DB='/global/projecta/projectdirs/lsst/groups/SSim/DC1/minion_1016_sqlite_new_dithers.db'
+#
+### InstanceCatalog generator static options
+export PHOSIM_IC_OPSSIM_DB=" --db /global/projecta/projectdirs/lsst/groups/SSim/DC2/minion_1016_desc_dithered_v4.db "
+export PHOSIM_IC_AGN_DB=" --agn_db_name /global/projecta/projectdirs/lsst/groups/SSim/DC2/agn_db_mbh_7.0_m_i_30.0.sqlite "
+export PHOSIM_IC_DESCQA_CAT=" --descqa_catalog protoDC2 "
+export PHOSIM_IC_FOV=" --fov 2.1 " 
+export PHOSIM_IC_RA=" --protoDC2_ra 55.064 "
+export PHOSIM_IC_DEC=" --protoDC2_dec -29.783 "
+export PHOSIM_IC_OPTS=" --enable_sprinkler "
+export PHOSIM_IC_MINMAG=" --min_mag 10.0 "
 
-## minimum magnitude (max brightness) for objects in sky catalog
-export DC2_MINMAG=10.0
+## Exclude sensors that have fewer than this many 'sources' in view.
+export DC2_MINSOURCE=100
 
 
 ## Static Instance Catalogs...
@@ -35,7 +49,6 @@ export DC2_MINMAG=10.0
 export PHOSIM_CATALOGS="/global/cscratch1/sd/descpho/Pipeline-tasks/DC2-phoSim-1/catalogs"
 
 ## physics overrides and other commands for phoSim
-#export PHOSIM_COMMANDS=${DC2_CONFIGDIR}/commands.txt
 export PHOSIM_COMMANDS=${DC2_PATH}/DC2_Repo/workflows/phosimConfig/commands.txt
 
 ## Global and persistent scratch space to where phoSim 'work' directory will be staged
@@ -53,5 +66,8 @@ export PATH=${PATH}\:${DC2_WORKFLOW}/bin
 ## For setting up phoSim and DMTCP outputs
 export filePermissions="02775"     #   rwxrwxr-x
 
+echo "------------------"
+echo
+echo
 
 

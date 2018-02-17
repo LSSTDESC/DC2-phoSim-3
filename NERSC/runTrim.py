@@ -4,6 +4,16 @@
 
 import os,sys,shutil,gzip
 
+## Function to read a text file, and count lines containing 'keyword'
+##    Equivalent to command line: $ grep <keyword> <fname> | wc -l
+##
+def grepwc(keyword, fname):
+    with open(fname, 'r') as fin:
+        return sum([1 for line in fin if keyword in line])
+    pass
+#####################
+
+
 print '\n\nWelcome to runTrim.py\n========================\n'
 rc = 0
 
@@ -55,8 +65,15 @@ for sensor in sensors:
     trimcatFileName = 'trimcatalog_'+os.getenv('DC2_OBSHISTID')+'_'+sensor+'.pars'
     trincatFileName = os.path.join(workDir,trimcatFileName)
     print 'trimcatFileName = ',trimcatFileName
-    numSources = sum(1 for line in open(trimcatFileName))-2
-    print 'Number of sources found in this trimmed catalog = ',numSources
+
+## This counts all sources in the trimmed catalog file
+#    numSources = sum(1 for line in open(trimcatFileName))-2
+#    print 'Number of sources found in this trimmed catalog = ',numSources
+
+## And this counts *only* galaxies
+    numSources = grepwc('sersic',trimcatFileName)
+    print 'Number of galaxies found in this trimmed catalog = ',numSources
+
     if numSources >= minsource: sensors2.append(sensor)
     pass
 

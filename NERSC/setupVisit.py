@@ -37,6 +37,15 @@ if rc <> 0 :
     pass
 
 
+
+
+
+
+##################################
+##### Prepare SCRATCH ############
+##################################
+
+log.info('Prepare $SCRATCH space for phoSim')
 ## Create Persistent data store directory structure for this invocation of phoSim
 ##   This area is in the LSST "project" storage space
 
@@ -46,7 +55,7 @@ filePermissions = int(os.getenv("filePermissions"),8) ## Octal file permissions
 archivesDirName = 'archives'
 outDir = os.path.join(os.environ['DC2_OUTPUT'],os.environ['DC2_SIXDIGSTREAM'])
 
-print 'filePermissions = ',filePermissions,' (or ',oct(filePermissions), ' octal)'
+#print 'filePermissions = ',filePermissions,' (or ',oct(filePermissions), ' octal)'
 
 log.info('PhoSim output directory = \n\t%s',outDir)
 
@@ -138,9 +147,15 @@ if rc <> 0 :
     pass
 
 
-##
-## Determine visit number (obsHistID) and list of sensors to simulate
-##
+
+
+
+
+#############################################
+##### Determine visit number (obsHistID)
+#############################################
+
+
 stream = int(os.getenv('PIPELINE_STREAM'))
 log.info('Extract visit data.')
 
@@ -151,7 +166,6 @@ visitFile = os.getenv('DC2_VISIT_DB')
 sensorList = list(focalPlane)        # start off assuming we simulate the entire focal plane; will be trimmed later
 visitID = str(getVisit(stream,visitFile))
 
-print 'visitID = ',visitID,', type(visitID) = ',type(visitID)
 if len(sensorList) > 0:
     print 'sensorList[',len(sensorList),'] = ',sensorList
 else:
@@ -183,36 +197,39 @@ if rc1 <> 0 or rc2 <> 0 or rc3 <> 0:
     pass
 
 
-##  Set up phoSim instanceCatalog
+
+
+
+######################################
+#####  Generate phoSim instanceCatalog
+######################################
+
 
 icName = 'phosim_cat_'+visitID+'.txt'
 print 'icName = ',icName
 
 if os.getenv('PHOSIM_IC_GEN') == 'STATIC':
-    print 'Using statically generated instance catalog'
+    print '\nUsing statically generated instance catalog'
     icDir = os.getenv('PHOSIM_CATALOGS')+'/'+visitID
-    print 'icDir = ',icDir
+    print 'icDir    = ',icDir
     icSelect = os.path.join(icDir,icName)
     print 'icSelect = ',icSelect
     
 elif os.getenv('PHOSIM_IC_GEN') == 'DYNAMIC':
-    print 'Using dymanically generated instance catalog'
+    print '\nUsing dymanically generated instance catalog'
 
     cmd = os.path.join(os.getenv('DC2_CONFIGDIR'),'genIC.sh')
     print 'cmd = ',cmd
 
     icDir = os.path.join(scrDir,'instCat')
-    print 'icDir = ',icDir
+    print 'icDir    = ',icDir
     icSelect = os.path.join(icDir,icName)
     print 'icSelect = ',icSelect
-    minMag = os.getenv('DC2_MINMAG')
-    print 'minMag = ',minMag
-    opts = ' --db '+os.getenv('DC2_OPSSIM_DB')
-    opts += ' --out '+icDir
-    opts += ' --id '+visitID
-    opts += ' --descqa_cat_file protoDC2'
-#    opts += ' --descqa_cat_file proto-dc2_v2.1.1'
-#    opts += ' --min_mag '+minMag
+
+    ## The options specified below are not known until runtime, all others are in config.sh
+    opts = ' --out_dir '+icDir
+    cmd += opts
+    opts = ' --ids '+visitID
     cmd += opts
     log.info('Generate instanceCatalog.')
     print 'final cmd = ',cmd
@@ -244,35 +261,7 @@ if rc <> 0 :
     sys.exit(99)
     pass
 
-
-
-
-## Copy instanceCatalog to scratch and uncompress
-###  Assume if ic compressed, then filename.txt.gz
-
-# old way: pre-made instanceCatalog copied from repository to $SCRATCH
-#log.info('Copy/create uncompressed instanceCatalog in $SCRATCH')
-#icScratch = os.path.join(scrDir,os.path.basename(icSelect))
-#shutil.copyfile(icSelect,icScratch)
-
-# new way: instanceCatalog is generated in place on $SCRATCH
 icScratch = icSelect
-
-
-## No longer needed: all top-level ICs are now .txt
-#if icScratch.endswith('.gz'):
-#    icNew = os.path.splitext(icScratch)[0]
-#    print 'icNew = ',icNew
-#    print 'icScratch = ',icScratch
-#    inF = gzip.open(icScratch,'rb')
-#    outF = open(icNew,'wb')
-#    outF.write(inF.read())
-#    inF.close()
-#    outF.close()
-#    os.remove(icScratch)
-#    icScratch = icNew
-#    pass
-
 
 ## Parse the first part of the instanceCatalog and extract a few items
 ic = {}
@@ -351,7 +340,13 @@ if rc <> 0 :
 
 
 
-## Copy command file to scratch
+
+####################################
+####### Prepare phosim command file
+####################################
+
+
+## Copy phoSim command file to scratch
 log.info('Copy command file to $SCRATCH')
 cfScratch = os.path.join(scrDir,os.path.basename(os.getenv('PHOSIM_COMMANDS')))
 shutil.copyfile(os.getenv('PHOSIM_COMMANDS'),cfScratch)
@@ -387,12 +382,57 @@ if rc <> 0 :
     pass
 
 
+
+
+######################################################
+## Create a sym-link mirror of the built-in SED files
+######################################################
+
+print '\n\n===================================================================='
+log.info('Build SED files sym-link directory')
+SOURCE = os.path.join(os.getenv('PHOSIM_ROOT'),'data/SEDs')
+DESTINATION = os.path.join(scrDir,'SEDs')
+
+PHOSIM_SEDS = DESTINATION
+cmd = "cp -as "+SOURCE+" "+DESTINATION
+log.info("Executing command...")
+print cmd
+rc = os.system(cmd)
+if rc != 0:
+    log.error("Command failed, aborting...")
+    pass
+
+
+## Create a sym-link in the SED mirror to the SED files dynamically
+## created by the instanceCatalog generation
+
+SOURCE = os.path.join(icDir,"Dynamic")
+DESTINATION = PHOSIM_SEDS
+cmd = 'ln -s '+SOURCE+' '+DESTINATION
+log.info("Executing command...")
+print cmd
+rc = os.system(cmd)
+if rc != 0:
+    log.error("Command failed, aborting...")
+    pass
+
+
+
+
 ## (First) Change file permissions in phoSim /work tree from default (0750) to
 ## something reasonable (0755)
-os.system('chmod -R 0755 '+scrDir)
+#os.system('chmod -R 0755 '+scrDir)# not needed after ACL treatment
+
+
+
+
+#####################################
+##  Run PhoSim (Part I)
+#####################################
 
 
 ## Run first part of phoSim, preparation for downstream trim/raytrace/e2adc
+print '\n\n===================================================================='
 log.info('Run phoSim (part I)')
 cmd = os.path.join(os.getenv('PHOSIM_ROOT'),'phosim.py')
 
@@ -403,7 +443,7 @@ opts += ' -o '+scr_output
 opts += ' -w '+scr_work
 opts += ' -c '+cfScratch
 opts += ' --checkpoint=0 '
-#opts += ' --sed='+os.getenv('PHOSIM_SEDS')+' '
+opts += ' --sed='+PHOSIM_SEDS+' '
 
 if os.getenv('PHOSIM_E2ADC') == 0:
     opts += ' -e 0 '
@@ -414,7 +454,6 @@ cmd += ' '+icScratch+opts
 print 'phoSim command:\n',cmd
 print
 sys.stdout.flush()
-
 rc = os.system(cmd)
 
 sys.stdout.flush()
@@ -422,13 +461,20 @@ log.info('Return from phoSim, rc = '+str(rc))
 
 ## (Second) Change file permissions in phoSim /work tree from default (0750) to
 ## something reasonable (0755)
-os.system('chmod -R 0755 '+scrDir)
+#os.system('chmod -R 0755 '+scrDir)# no longer needed after ACL treatment
 
 if rc != 0: 
     if rc >= 255: rc=17
     sys.exit(rc)
     pass
 
+
+
+
+
+###############################################
+###### Prepare for subsequent workflow steps
+###############################################
 
 
 ## Determine the number of catalog trim jobs to perform

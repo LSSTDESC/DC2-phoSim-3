@@ -1,6 +1,8 @@
 #!/bin/bash
 ## genIC.sh - setup and run the DC2 instanceCatalog generator for the DC2-phoSim-2 task
 
+echo
+echo "==============================================================="
 echo "Entering genIC.sh - setup and run DC2 instanceCatalog generator"
 date
 
@@ -10,42 +12,46 @@ options=$@
 ## Remove command line parameters so as to not confuse the stack setup script :(
 shift $#
 
-## Setup
-echo "$ "source /global/common/software/lsst/cori-haswell-gcc/stack/setup_w_2017_46_py3_gcc6.sh
-source /global/common/software/lsst/cori-haswell-gcc/stack/setup_w_2017_46_py3_gcc6.sh
 
-echo "$ "setup lsst_sims
-setup lsst_sims
+## Setup (revamped, 2/15/2018)
+cmd="source ${PHOSIM_IC_SETUP}"
+echo $cmd
+eval $cmd
 
-echo "$ "eups declare gcr_catalogs -r ${PHOSIM_IC_GCR_CATALOGS}  -c
-eups declare gcr_catalogs -r ${PHOSIM_IC_GCR_CATALOGS}  -c
+echo printenv PYTHONPATH
+printenv PYTHONPATH
 
-echo "$ "setup gcr_catalogs
-setup gcr_catalogs
-
-echo "$ "eups list -v gcr_catalogs
-eups list -v gcr_catalogs
 
 ## Display the IC generator options (incl. default values)
-echo "$ "/usr/bin/time python ${PHOSIM_IC_GENERATOR} -h
-/usr/bin/time python ${PHOSIM_IC_GENERATOR} -h
+echo "$ "/usr/bin/time ${PHOSIM_IC_GENERATOR} -h
+/usr/bin/time ${PHOSIM_IC_GENERATOR} -h
+
+## Construct the generateIC command with static options (in config.sh) plus dynamic options passed by setupVisit.py
+cmd='/usr/bin/time '${PHOSIM_IC_GENERATOR}
+cmd="$cmd ${PHOSIM_IC_OPSSIM_DB}"
+cmd="$cmd ${PHOSIM_IC_AGN_DB}"
+cmd="$cmd ${PHOSIM_IC_DESCQA_CAT}"
+cmd="$cmd ${PHOSIM_IC_FOV}"
+cmd="$cmd ${PHOSIM_IC_RA}"
+cmd="$cmd ${PHOSIM_IC_DEC}"
+cmd="$cmd ${PHOSIM_IC_OPTS}"
+cmd="$cmd ${PHOSIM_IC_MINMAG}"
+cmd="$cmd $options"
 
 ## Run the IC generator
-echo "$ "/usr/bin/time python ${PHOSIM_IC_GENERATOR} $options
+echo
 echo
 echo
 echo "================== Begin phosim instance catalog generator ============================="
 date
+echo "$ "$cmd
 echo
-/usr/bin/time python ${PHOSIM_IC_GENERATOR} $options
+eval $cmd
 rc=$?
-echo
-date
 echo "================== End phosim instance catalog generator ============================="
-echo
-echo
-echo "InstanceCatalog generation complete"
+echo rc=$rc
 date
-
+echo
+echo
 exit $rc
 
