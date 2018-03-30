@@ -21,6 +21,8 @@ eval $cmd
 echo printenv PYTHONPATH
 printenv PYTHONPATH
 
+## Emergency add (2/20/2018 21:52)
+export HDF5_USE_FILE_LOCKING=FALSE
 
 ## Display the IC generator options (incl. default values)
 echo "$ "/usr/bin/time ${PHOSIM_IC_GENERATOR} -h

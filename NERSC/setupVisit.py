@@ -232,7 +232,7 @@ elif os.getenv('PHOSIM_IC_GEN') == 'DYNAMIC':
     opts = ' --ids '+visitID
     cmd += opts
     log.info('Generate instanceCatalog.')
-    print 'final cmd = ',cmd
+    print '\n$ ',cmd
 
     sys.stdout.flush()
     rc = os.system(cmd)

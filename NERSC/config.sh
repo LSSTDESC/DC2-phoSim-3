@@ -29,8 +29,15 @@ export PHOSIM_IC_GENERATOR='generateInstCat.py'
 ## Dynamic Instance Catalogs...
 #
 ### InstanceCatalog generator static options
-export PHOSIM_IC_OPSSIM_DB=" --db /global/projecta/projectdirs/lsst/groups/SSim/DC2/minion_1016_desc_dithered_v4.db "
-export PHOSIM_IC_AGN_DB=" --agn_db_name /global/projecta/projectdirs/lsst/groups/SSim/DC2/agn_db_mbh_7.0_m_i_30.0.sqlite "
+
+## Original DB files in r/w GPFS
+#export PHOSIM_IC_OPSSIM_DB=" --db /global/projecta/projectdirs/lsst/groups/SSim/DC2/minion_1016_desc_dithered_v4.db "
+#export PHOSIM_IC_AGN_DB=" --agn_db_name /global/projecta/projectdirs/lsst/groups/SSim/DC2/agn_db_mbh_7.0_m_i_30.0.sqlite "
+
+## Staged copies for reliability and performance reasons
+export PHOSIM_IC_OPSSIM_DB=" --db /global/cscratch1/sd/descpho/Pipeline-tasks/DBstaging/minion_1016_desc_dithered_v4.db "
+export PHOSIM_IC_AGN_DB=" --agn_db_name /global/cscratch1/sd/descpho/Pipeline-tasks/DBstaging/agn_db_mbh_7.0_m_i_30.0.sqlite "
+
 export PHOSIM_IC_DESCQA_CAT=" --descqa_catalog protoDC2 "
 export PHOSIM_IC_FOV=" --fov 2.1 " 
 export PHOSIM_IC_RA=" --protoDC2_ra 55.064 "
