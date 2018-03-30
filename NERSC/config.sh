@@ -1,5 +1,5 @@
 # config.sh - general set up for phoSim task
-#             updated for Run1.1
+#             updated for Run1.2
 
 ## Prepare to run phoSim
 echo
@@ -14,7 +14,7 @@ export DC2_REPO='/global/common/software/lsst/cori-haswell-gcc/DC2_Repo/DC2_Repo
 export DC2_FILTER_LIST="u g r i z y"
 export DC2_FIELD_LIST="WFD uDDF"
 
-## Visit lists
+## Visit lists (note: same visit lists for run 1.1 and 1.2)
 export DC2_VISIT_DB=${DC2_REPO}/data/Run1.1/"protoDC2_visits_${DC2_FIELD}_${DC2_FILTER}-band.txt"
 echo 'DC2_VISIT_DB = '$DC2_VISIT_DB
 
@@ -23,7 +23,8 @@ echo 'DC2_VISIT_DB = '$DC2_VISIT_DB
 ##
 ## Re-vamped 2/15/2018 to use 'prod' installations of IC-generation packages
 export PHOSIM_IC_GEN='DYNAMIC'
-export PHOSIM_IC_SETUP='/global/common/software/lsst/cori-haswell-gcc/Run1.1p_setup.bash'
+#export PHOSIM_IC_SETUP='/global/common/software/lsst/cori-haswell-gcc/Run1.1p_setup.bash'
+export PHOSIM_IC_SETUP='/global/common/software/lsst/cori-haswell-gcc/Run1.2p_setup.bash'
 export PHOSIM_IC_GENERATOR='generateInstCat.py'
 
 ## Dynamic Instance Catalogs...
@@ -33,10 +34,12 @@ export PHOSIM_IC_GENERATOR='generateInstCat.py'
 ## Original DB files in r/w GPFS
 #export PHOSIM_IC_OPSSIM_DB=" --db /global/projecta/projectdirs/lsst/groups/SSim/DC2/minion_1016_desc_dithered_v4.db "
 #export PHOSIM_IC_AGN_DB=" --agn_db_name /global/projecta/projectdirs/lsst/groups/SSim/DC2/agn_db_mbh_7.0_m_i_30.0.sqlite "
+#export PHOSIM_IC_AGN_DB=" --agn_db_name /global/projecta/projectdirs/lsst/groups/SSim/DC2/agn_db_mbh_7.0_m_i_30.0_gcr_protodc2_v3.db "
 
 ## Staged copies for reliability and performance reasons
 export PHOSIM_IC_OPSSIM_DB=" --db /global/cscratch1/sd/descpho/Pipeline-tasks/DBstaging/minion_1016_desc_dithered_v4.db "
 export PHOSIM_IC_AGN_DB=" --agn_db_name /global/cscratch1/sd/descpho/Pipeline-tasks/DBstaging/agn_db_mbh_7.0_m_i_30.0.sqlite "
+export PHOSIM_IC_AGN_DB=" --agn_db_name /global/cscratch1/sd/descpho/Pipeline-tasks/DBstaging/agn_db_mbh_7.0_m_i_30.0_gcr_protodc2_v3.db "
 
 export PHOSIM_IC_DESCQA_CAT=" --descqa_catalog protoDC2 "
 export PHOSIM_IC_FOV=" --fov 2.1 " 

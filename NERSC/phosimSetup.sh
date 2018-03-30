@@ -4,7 +4,8 @@
 #version=v3.7.1   # Nov 2017
 #version=v3.7.6   # 6 Dec 2017
 #version=v3.7.7   # 22 Jan 2018
-version=v3.7.8   # 23 Jan 2018
+#version=v3.7.8   # 23 Jan 2018
+version=v3.7.9   # 30 Mar 2018
 
 ## Select compiler used to build phoSim
 #compiler=gcc
