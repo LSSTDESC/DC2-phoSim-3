@@ -23,9 +23,14 @@ echo 'DC2_VISIT_DB = '$DC2_VISIT_DB
 ##
 ## Re-vamped 2/15/2018 to use 'prod' installations of IC-generation packages
 export PHOSIM_IC_GEN='DYNAMIC'
-#export PHOSIM_IC_SETUP='/global/common/software/lsst/cori-haswell-gcc/Run1.1p_setup.bash'
-export PHOSIM_IC_SETUP='/global/common/software/lsst/cori-haswell-gcc/Run1.2p_setup.bash'
 export PHOSIM_IC_GENERATOR='generateInstCat.py'
+
+# Run 1.1p setup
+#export PHOSIM_IC_SETUP='/global/common/software/lsst/cori-haswell-gcc/Run1.1p_setup.bash'
+
+# Run 1.2p setup
+#export PHOSIM_IC_SETUP='/global/common/software/lsst/cori-haswell-gcc/Run1.2p_setup.bash'
+export PHOSIM_IC_SETUP='/global/common/software/lsst/cori-haswell-gcc/dev/Run1.2p_dev_setup.bash'
 
 ## Dynamic Instance Catalogs...
 #
