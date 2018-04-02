@@ -8,7 +8,13 @@ echo "------------------"
 date
 echo
 ## Git repository containing visit lists and instanceCatalog generator
-export DC2_REPO='/global/common/software/lsst/cori-haswell-gcc/DC2_Repo/DC2_Repo'
+#export DC2_REPO='/global/common/software/lsst/cori-haswell-gcc/DC2_Repo/DC2_Repo'
+################# TEST ONLY ######################
+################# TEST ONLY ######################
+export DC2_REPO='/global/common/software/lsst/cori-haswell-gcc/dev/DC2_Repo'
+################# TEST ONLY ######################
+################# TEST ONLY ######################
+
 
 ## Select which to use for this task (u,g,r,i,z,y)
 export DC2_FILTER_LIST="u g r i z y"
@@ -30,7 +36,11 @@ export PHOSIM_IC_GENERATOR='generateInstCat.py'
 
 # Run 1.2p setup
 #export PHOSIM_IC_SETUP='/global/common/software/lsst/cori-haswell-gcc/Run1.2p_setup.bash'
+################# TEST ONLY ######################
+################# TEST ONLY ######################
 export PHOSIM_IC_SETUP='/global/common/software/lsst/cori-haswell-gcc/dev/Run1.2p_dev_setup.bash'
+################# TEST ONLY ######################
+################# TEST ONLY ######################
 
 ## Dynamic Instance Catalogs...
 #
@@ -64,7 +74,7 @@ export DC2_MINSOURCE=100
 export PHOSIM_CATALOGS="/global/cscratch1/sd/descpho/Pipeline-tasks/DC2-phoSim-1/catalogs"
 
 ## physics overrides and other commands for phoSim
-export PHOSIM_COMMANDS=${DC2_PATH}/DC2_Repo/workflows/phosimConfig/commands.txt
+export PHOSIM_COMMANDS=${DC2_REPO}/workflows/phosimConfig/commands.txt
 
 ## Global and persistent scratch space to where phoSim 'work' directory will be staged
 export PHOSIM_SCR_ROOT=/global/cscratch1/sd/descpho/Pipeline-tasks/${TASKNAME}
