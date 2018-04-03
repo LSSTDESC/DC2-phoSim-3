@@ -38,6 +38,7 @@ cmd="$cmd ${PHOSIM_IC_RA}"
 cmd="$cmd ${PHOSIM_IC_DEC}"
 cmd="$cmd ${PHOSIM_IC_OPTS}"
 cmd="$cmd ${PHOSIM_IC_MINMAG}"
+cmd="$cmd ${PHOSIM_IC_WARNINGS}"
 cmd="$cmd $options"
 
 ## Run the IC generator

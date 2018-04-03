@@ -62,6 +62,7 @@ export PHOSIM_IC_RA=" --protoDC2_ra 55.064 "
 export PHOSIM_IC_DEC=" --protoDC2_dec -29.783 "
 export PHOSIM_IC_OPTS=" --enable_sprinkler "
 export PHOSIM_IC_MINMAG=" --min_mag 10.0 "
+export PHOSIM_IC_WARNINGS=" --suppress_warnings "
 
 ## Exclude sensors that have fewer than this many 'sources' in view.
 export DC2_MINSOURCE=100
