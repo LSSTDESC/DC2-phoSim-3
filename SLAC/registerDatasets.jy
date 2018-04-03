@@ -120,7 +120,15 @@ def register():
             else:
                 fType = 'dat'
                 pass
-            dType = 'PHOSIM'
+            if outFile.startswith('lsst_e'):
+                dType = 'PHOSIM_E'
+            elif outFile.startswith('lsst_a'):
+                dType = 'PHOSIM_A'
+            elif outFile.startswith('centroid'):
+                dType = 'PHOSIM_C'
+            else:
+                dType = 'PHOSIM'
+                pass
 
             print 'Registration: ',fn,'\n filetype and datatype: ',fType,', ',dType,'\n datacat location: ',datacatRoot,':',group,'\n site location: ',site,':',outFileFull
 
