@@ -8,13 +8,7 @@ echo "------------------"
 date
 echo
 ## Git repository containing visit lists and instanceCatalog generator
-#export DC2_REPO='/global/common/software/lsst/cori-haswell-gcc/DC2_Repo/DC2_Repo'
-################# TEST ONLY ######################
-################# TEST ONLY ######################
-export DC2_REPO='/global/common/software/lsst/cori-haswell-gcc/dev/DC2_Repo'
-################# TEST ONLY ######################
-################# TEST ONLY ######################
-
+export DC2_REPO='/global/common/software/lsst/cori-haswell-gcc/DC2_Repo/DC2_Repo'
 
 ## Select which to use for this task (u,g,r,i,z,y)
 export DC2_FILTER_LIST="u g r i z y"
@@ -35,12 +29,7 @@ export PHOSIM_IC_GENERATOR='generateInstCat.py'
 #export PHOSIM_IC_SETUP='/global/common/software/lsst/cori-haswell-gcc/Run1.1p_setup.bash'
 
 # Run 1.2p setup
-#export PHOSIM_IC_SETUP='/global/common/software/lsst/cori-haswell-gcc/Run1.2p_setup.bash'
-################# TEST ONLY ######################
-################# TEST ONLY ######################
-export PHOSIM_IC_SETUP='/global/common/software/lsst/cori-haswell-gcc/dev/Run1.2p_dev_setup.bash'
-################# TEST ONLY ######################
-################# TEST ONLY ######################
+export PHOSIM_IC_SETUP='/global/common/software/lsst/cori-haswell-gcc/Run1.2p_setup.bash'
 
 ## Dynamic Instance Catalogs...
 #
