@@ -82,8 +82,8 @@ export PATH=${PATH}\:${DC2_WORKFLOW}/bin
 export filePermissions="02775"     #   rwxrwxr-x
 
 ## This prevents unnecessary warning messages on Cori
-export PMI_NO_FORK=1
-export PMI_NO_INITIALIZE=1
+#export PMI_NO_FORK=1
+#export PMI_NO_INITIALIZE=1
 
 echo "------------------"
 echo

@@ -4,6 +4,7 @@
 
 import os,sys,shutil,gzip,subprocess,shlex
 import logging as log
+import time,datetime
 
 def runPhosimStep(step,snap=0):
 
@@ -103,11 +104,34 @@ def runPhosimStep(step,snap=0):
    ## Construct phoSim command and execute
     log.info('Construct command and execute')
     #cmd = 'cat '+jobParms['Input']+' | '+jobParms['executable']
-    cmd = jobParms['executable']+' < '+jobParms['Input']
-    print 'cmd = ',cmd
+    cmd = 'time '+jobParms['executable']+' < '+jobParms['Input']
 
-    sys.stdout.flush()
-    rc = os.system(cmd)
-    sys.stdout.flush()
-    log.info('Return from '+step+', rc = '+str(rc))
+    numTries = 2   ## Number of times to try this phoSim step
+    for retry in range(numTries):
+        if retry > 0:
+            log.warning('Job step failed.  Will retry...')
+            print '\n\n\n'
+            print '========================================================'
+            print '========================================================'
+            print '        RETRY',step,' ...   after sleep(30)'
+            time.sleep(30)
+            print '========================================================'
+            print '========================================================'
+            print '\n\n\n'
+            pass
+        log.info('Starting phoSim step '+step)
+        startTime = datetime.datetime.now()
+        print 'cmd = ',cmd
+        sys.stdout.flush()
+
+        rc = os.system(cmd)
+
+        sys.stdout.flush()
+        endTime = datetime.datetime.now()
+        elapsedTime = endTime-startTime
+        log.info('Return from '+step+', rc = '+str(rc))
+        print 'Elapsed clock time = ',elapsedTime.total_seconds()/60.,' minutes'
+        if rc == 0:break
+        pass
+
     return rc

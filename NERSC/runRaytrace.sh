@@ -21,7 +21,11 @@ echo
 date
 echo "--------------------------------------------------------------------"
 echo
-
+echo "-----> Memory state:"
+date
+free -h
+echo "--------------------------------------------------------------------"
+echo
 ## Final step: run task code
 ${DC2_CONFIGDIR}/runRaytrace.py
 exit $?

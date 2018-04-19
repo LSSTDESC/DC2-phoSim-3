@@ -67,14 +67,16 @@ for sensor in sensors:
     print 'trimcatFileName = ',trimcatFileName
 
 ## This counts all sources in the trimmed catalog file
-#    numSources = sum(1 for line in open(trimcatFileName))-2
-#    print 'Number of sources found in this trimmed catalog = ',numSources
+    numSourcesAll = sum(1 for line in open(trimcatFileName))-2
+    print 'Number of sources found in this trimmed catalog = ',numSourcesAll
 
 ## And this counts *only* galaxies
-    numSources = grepwc('sersic',trimcatFileName)
-    print 'Number of galaxies found in this trimmed catalog = ',numSources
+    numSourcesGal = grepwc('sersic',trimcatFileName)
+    print 'Number of galaxies found in this trimmed catalog = ',numSourcesGal
 
-    if numSources >= minsource: sensors2.append(sensor)
+## Current policy: number of galaxies must exceed minsource (initially '100')
+    if numSourcesGal >= minsource: sensors2.append(sensor)
+
     pass
 
 numSensors = len(sensors2)
