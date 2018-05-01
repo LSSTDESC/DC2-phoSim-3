@@ -1,4 +1,5 @@
-#!/usr/bin/env python
+#!/usr/common/software/python/2.7-anaconda-4.4/bin/python
+###!/usr/bin/env python
 ## setupVisit.py - bookkeeping for initiating a phoSim run in DC2-phoSim task
 ##
 ##

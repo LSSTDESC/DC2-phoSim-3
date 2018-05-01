@@ -1,8 +1,11 @@
-#!/usr/bin/env python
+#!/usr/common/software/python/2.7-anaconda-4.4/bin/python
+###!/usr/bin/env python
 ## runRaytrace.py - phoSim catalog trim step
 ##
 
 import os,sys,shutil,gzip
+
+sys.version_info
 
 print '\n\nWelcome to runRaytrace.py\n========================\n'
 rc = 0

@@ -1,4 +1,5 @@
-#!/usr/bin/env python
+#!/usr/common/software/python/2.7-anaconda-4.4/bin/python
+###!/usr/bin/env python
 ## runTrim.py - phoSim catalog trim step
 ##
 
