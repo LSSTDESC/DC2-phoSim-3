@@ -105,7 +105,7 @@ def runPhosimStep(step,snap=0):
    ## Construct phoSim command and execute
     log.info('Construct command and execute')
     #cmd = 'cat '+jobParms['Input']+' | '+jobParms['executable']
-    cmd = 'time '+jobParms['executable']+' < '+jobParms['Input']
+    cmd = '/usr/bin/time '+jobParms['executable']+' < '+jobParms['Input']
 
     numTries = 2   ## Number of times to try this phoSim step
     for retry in range(numTries):
